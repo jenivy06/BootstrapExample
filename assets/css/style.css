@@ -2,3 +2,29 @@
     padding-top: 75px;
     padding-right: 25px;
 }
+
+.parallax {
+    /* The image used */
+    background-image: url("https://i.pinimg.com/originals/fb/65/a7/fb65a7c1e3f9342057ca70db39259515.jpg");
+  
+    /* Set a specific height */
+    height: 500px;
+  
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+   
+  }
+
+  .titletext {
+    font-size: 68px;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    position: relative;
+    padding-top: 225px;
+    border-color: white;
+    border-width: 20px;
+  }
