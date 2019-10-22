@@ -6,7 +6,7 @@
                         <meta charset="utf-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
                         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
                         <script type="text/javascript" src="assets/js/javascript.js"></script>
@@ -89,7 +89,7 @@
     <div class="col-sm-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><a href="#">SUN TODAY? CHECK YOUR LOCAL WEATHER <i class="fas fa-chevron-right"></i></a></h5>
+            <h5 class="card-title"><a href="#" data-toggle="modal" data-target="#weathermodal">SUN TODAY? CHECK YOUR LOCAL WEATHER <i class="fas fa-chevron-right"></i></a></h5>
             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
            
           </div>
@@ -119,7 +119,7 @@
         <div class="col-sm-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title"><a href="#" data-toggle="modal" data-target="#exampleModal">CONTACT US <i class="fas fa-chevron-right"></i></a></h5>
+                <h5 class="card-title"><a href="#" data-toggle="modal" data-target="#contactmodal">CONTACT US <i class="fas fa-chevron-right"></i></a></h5>
                 <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                
               </div>
@@ -129,7 +129,7 @@
 </div>
 <!--CARDS-->
 <!--CONTACT MODAL-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="contactmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -159,6 +159,40 @@
       </div>
     </div>
   </div>
+  <!--WEATHER MODAL-->
+<div class="modal fade" id="weathermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">CHECK THE WEATHER</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="city-form">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Enter Your City</label>
+                  <input type="text" class="form-control" id="city-input" aria-describedby="emailHelp" placeholder="Enter city"> 
+                </div>
+                <button type="submit" class="btn btn-primary" id="select-city">Submit</button>
+                <!-- Retrieved data will be dumped here -->
+              <p>
+                  <div class="city"></div>
+                  <div class="temp"></div>
+                  <div class="wind"></div>
+                  <div class="humidity"></div>
+                  <p><i>powered by <a href="https://weatherstack.com/">weatherstack</a></i></p>
+                </p>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">Copyright© 2019 Jenny Ivy
    
@@ -172,5 +206,57 @@
 <script>
 $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
+    var APIKey = "hoTyk2NBwWjCrNVTIPpb1F0hxAIkt1kn";
+
+    function getCityWeather (cityQuery){
+
+    // Here we are building the URL we need to query the database
+    var queryURL = "https://api.apixu.com/v1/current.json?key=e543c83b86a646e7bce14523190909&q=" +
+      cityQuery;
+
+    // Here we run our AJAX call to the OpenWeatherMap API
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+      // We store all of the retrieved data inside of an object called "response"
+      .then(function(response) {
+
+        // Log the queryURL
+        console.log(queryURL);
+
+        // Log the resulting object
+        console.log(response);
+
+        // Transfer content to HTML
+        $(".city").html("<h4>" + response.location.name + "," + " " + response.location.region + " Weather Details: " + "</h4>");
+        
+        // $(".wind").text("Wind Speed: " + response.wind;
+        // $(".humidity").text("Humidity: " + response.main.humidity);
+        $(".temp").html("<h5>" + "Temperature (F): " + response.current.temp_f + "</h5>");
+        $(".wind").html("<h5>" + "Wind speed (mph): " + response.current.wind_mph + "</h5>");
+        $(".humidity").html("<h5>" + "Humidity (%): " + response.current.humidity + "</h5>");
+
+        // Log the data in the console as well
+        // console.log("Wind Speed: " + response.wind.speed);
+        // console.log("Humidity: " + response.main.humidity);
+        // console.log("Temperature (F): " + response.main.temp);
+        console.log("Temperature (F) " + response.current.condition.temp_f);
+
+      });
+    }
+       // Event handler for user clicking the select-artist button
+  $("#select-city").on("click", function(event) {
+    // Preventing the button from trying to submit the form
+    event.preventDefault();
+    // Storing the artist name
+    var inputCity = $("#city-input").val().trim();
+    
+
+    // Running the getcityweather function(passing in the city and state as arguments)
+    getCityWeather(inputCity);
+    $("#city-form").trigger("reset");
+    
+    })
 });
 </script>
