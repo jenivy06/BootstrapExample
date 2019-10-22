@@ -20,11 +20,30 @@
   }
 
   .titletext {
-    font-size: 68px;
+    color: #f7a11a;
+    font-size: 64px;
     font-family: 'Raleway', sans-serif;
     text-align: center;
     position: relative;
     padding-top: 225px;
     border-color: white;
     border-width: 20px;
+  }
+
+  .section {
+      height: 50px
+  }
+
+  .card-title {
+      background-color: lightgrey;
+      width: 100%;
+  }
+
+  a:hover {
+    color: blue;
+    cursor: pointer;
+  }
+
+  a{
+      color: black;
   }
